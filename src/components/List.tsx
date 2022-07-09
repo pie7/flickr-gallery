@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
+import EXIF from "exif-js";
 import { AppContext } from "../App";
 import Modal from "./Modal";
 
 const List = () => {
     const { data } = useContext(AppContext)
     const [isOpen, setIsOpen] = useState(false);
+    const [imgMeata , setImgMeta] =useState('')
     const handleClose = () => {
         setIsOpen(false)
     }
@@ -17,6 +19,14 @@ const List = () => {
         author: ''
     });
 
+    const getImgMeta = (imgId : string) => {
+        var img = document.getElementById(imgId) as any;
+            EXIF.getData(img , function() {
+                var allMetaData = EXIF.getAllTags(this);
+                setImgMeta(JSON.stringify(allMetaData, null, "\t"))
+            });
+    }
+
     return (
         <ul className="flex flex-wrap gap-2">
             {data?.items?.map((item: any, index: number) => {
@@ -27,9 +37,10 @@ const List = () => {
                         onClick={() => {
                             setModalData(item)
                             setIsOpen(true)
+                            getImgMeta(`${item?.author_id}-${index}`)
                         }}
                     >
-                        <img className="w-full h-full object-fill" src={item?.media?.m} alt={item?.title} loading="lazy" />
+                        <img id={`${item?.author_id}-${index}`} className="w-full h-full object-fill" src={item?.media?.m} alt={item?.title} loading="lazy"/>
                         <div className="text-left bg-black absolute bottom-0 left-0 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
                             <p className="block text-white truncate text-ellipsis">{item?.title}</p>
                             <p className="text-white">by ${item.author}</p>
@@ -47,6 +58,10 @@ const List = () => {
                     <div>
                         <span className="font-bold">Desc:</span>
                         <span dangerouslySetInnerHTML={{ __html: modalData?.description }} />
+                    </div>
+                    <div>
+                    <span className="font-bold">EXIF:</span>
+                        {imgMeata}
                     </div>
                     {modalData.tags.trim() &&
                         <div>
