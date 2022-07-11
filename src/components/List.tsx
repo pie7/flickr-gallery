@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 import Modal from "./Modal";
 
 const List = () => {
-    const { data } = useContext(AppContext)
+    const { data, sortType } = useContext(AppContext)
     const [isOpen, setIsOpen] = useState(false);
     const [imgMeata , setImgMeta] =useState('')
     const handleClose = () => {
@@ -27,9 +27,19 @@ const List = () => {
             });
     }
 
+    const listItems = () => {
+        if (sortType === 'DESC') {
+            return data?.items?.sort((a: any, b:any) => a.date_taken.localeCompare(b.date_taken))
+        } else if (sortType === 'ASC') {
+            return data?.items?.sort((a:any, b:any) => -a.date_taken.localeCompare(b.date_taken))
+        } else {
+            return data.items
+        }
+    }
+
     return (
         <ul className="flex flex-wrap gap-2">
-            {data?.items?.map((item: any, index: number) => {
+            {listItems().length> 0 && listItems().map((item: any, index: number) => {
                 return (
                     <li
                         key={`${item?.author_id}-${index}`}

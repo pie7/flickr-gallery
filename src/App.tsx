@@ -4,18 +4,21 @@ import { useFetch } from "./hooks/useFetch";
 import * as API from "./apis";
 import List from "./components/List";
 import SearchBox from "./components/SearchBox";
+import Filter from "./components/Filter";
 
 export const AppContext = React.createContext({
   data: {
     items: []
   },
-  isLoading: false
+  isLoading: false,
+  sortType: ''
 })
 
 
 function App() {
   const [inputText, setInputText] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [sortType, setSortType] = useState('')
   const { isLoading, data } = useFetch(API.photos_public(searchKeyword))
 
   const updateSearchInput = (e: any) => {
@@ -25,10 +28,14 @@ function App() {
     setSearchKeyword(searchKeyword)
     setInputText('')
   }
+  const handleChange = (e: any) => {
+    setSortType(e.target.value)
+}
   return (
     <div className="App">
-      <AppContext.Provider value={{ isLoading, data }}>
+      <AppContext.Provider value={{ isLoading, data, sortType }}>
         <div className='container m-auto mt-10 overflow-hidden'>
+          <Filter onChange={handleChange}/>
           <SearchBox
             searchKeyword={inputText}
             updateSearchInput={updateSearchInput}
