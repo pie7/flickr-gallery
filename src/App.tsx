@@ -34,7 +34,7 @@ function App() {
   return (
     <div className="App">
       <AppContext.Provider value={{ isLoading, data, sortType }}>
-        <div className='container m-auto mt-10 overflow-hidden'>
+        <div className='container m-auto mt-10 overflow-hidden px-3'>
           <Filter onChange={handleChange}/>
           <SearchBox
             searchKeyword={inputText}
