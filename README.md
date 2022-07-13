@@ -8,7 +8,7 @@ RWD Gallery
 - [x] Sort by Date
 - [x] Photo EXIF
 - [x] Photo Detail
-- [ ] Favorite
+- [x] Favorite
 
 ### `Web APIs`
 
