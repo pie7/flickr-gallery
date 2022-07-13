@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import EXIF from "exif-js";
 import { AppContext } from "../App";
 import Modal from "./Modal";
+import Favorite from "./Favorite";
 
 const List = () => {
     const { data, sortType } = useContext(AppContext)
@@ -54,6 +55,10 @@ const List = () => {
                         <div className="text-left bg-black absolute bottom-0 left-0 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
                             <p className="block text-white truncate text-ellipsis">{item?.title}</p>
                             <p className="text-white">by ${item.author}</p>
+                            </div>
+                            <span className="absolute top-0 right-0 inline-block p-1">
+                                <Favorite itemId={item?.author_id} />
+                            </span>
                         </div>
                     </li>
                 )
