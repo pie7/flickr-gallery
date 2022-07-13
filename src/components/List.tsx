@@ -7,7 +7,8 @@ import Favorite from "./Favorite";
 const List = () => {
     const { data, sortType } = useContext(AppContext)
     const [isOpen, setIsOpen] = useState(false);
-    const [imgMeata , setImgMeta] =useState('')
+    const [imgMeata, setImgMeta] = useState('')
+
     const handleClose = () => {
         setIsOpen(false)
     }
@@ -20,19 +21,19 @@ const List = () => {
         author: ''
     });
 
-    const getImgMeta = (imgId : string) => {
+    const getImgMeta = (imgId: string) => {
         var img = document.getElementById(imgId) as any;
-            EXIF.getData(img , function() {
-                var allMetaData = EXIF.getAllTags(this);
-                setImgMeta(JSON.stringify(allMetaData, null, "\t"))
-            });
+        EXIF.getData(img, function () {
+            var allMetaData = EXIF.getAllTags(this);
+            setImgMeta(JSON.stringify(allMetaData, null, "\t"))
+        });
     }
 
     const listItems = () => {
         if (sortType === 'DESC') {
-            return data?.items?.sort((a: any, b:any) => a.date_taken.localeCompare(b.date_taken))
+            return data?.items?.sort((a: any, b: any) => a.date_taken.localeCompare(b.date_taken))
         } else if (sortType === 'ASC') {
-            return data?.items?.sort((a:any, b:any) => -a.date_taken.localeCompare(b.date_taken))
+            return data?.items?.sort((a: any, b: any) => -a.date_taken.localeCompare(b.date_taken))
         } else {
             return data.items
         }
@@ -40,7 +41,7 @@ const List = () => {
 
     return (
         <ul className="flex flex-wrap gap-2">
-            {listItems().length> 0 && listItems().map((item: any, index: number) => {
+            {listItems().length > 0 && listItems().map((item: any, index: number) => {
                 return (
                     <li
                         key={`${item?.author_id}-${index}`}
@@ -51,10 +52,11 @@ const List = () => {
                             getImgMeta(`${item?.author_id}-${index}`)
                         }}
                     >
-                        <img id={`${item?.author_id}-${index}`} className="w-full h-full object-fill" src={item?.media?.m} alt={item?.title} loading="lazy"/>
-                        <div className="text-left bg-black absolute bottom-0 left-0 bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <p className="block text-white truncate text-ellipsis">{item?.title}</p>
-                            <p className="text-white">by ${item.author}</p>
+                        <img id={`${item?.author_id}-${index}`} className="w-full h-full object-fill" src={item?.media?.m} alt={item?.title} loading="lazy" />
+                        <div className="p-1 text-left bg-black absolute bottom-0 left-0 right-0 bg-opacity-50 opacity-0 transition-opacity group-hover:opacity-100">
+                            <div className="w-9/12">
+                                <p className="block text-white truncate text-ellipsis">{item?.title}</p>
+                                <p className="text-white truncate text-ellipsis">by ${item.author}</p>
                             </div>
                             <span className="absolute top-0 right-0 inline-block p-1">
                                 <Favorite itemId={item?.author_id} />
@@ -75,7 +77,7 @@ const List = () => {
                         <span dangerouslySetInnerHTML={{ __html: modalData?.description }} />
                     </div>
                     <div>
-                    <span className="font-bold">EXIF:</span>
+                        <span className="font-bold">EXIF:</span>
                         {imgMeata}
                     </div>
                     {modalData.tags.trim() &&

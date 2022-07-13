@@ -55,12 +55,12 @@ function App() {
   }
   const handleChange = (e: any) => {
     setSortType(e.target.value)
-}
+  }
   return (
     <div className="App">
       <AppContext.Provider value={{ isLoading, data, sortType, dispatch, state }}>
         <div className='container m-auto mt-10 overflow-hidden px-3'>
-          <Filter onChange={handleChange}/>
+          <Filter onChange={handleChange} />
           <SearchBox
             searchKeyword={inputText}
             updateSearchInput={updateSearchInput}
